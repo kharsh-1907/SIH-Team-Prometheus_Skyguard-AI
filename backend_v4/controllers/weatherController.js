@@ -63,9 +63,9 @@ exports.addWeather = async (req, res) => {
             );
 
             mlResult = {
-                status: isOob ? "Anomaly" : "Unknown",
+                status: isOob ? "Anomaly" : "Normal",
                 anomaly_score: isOob ? 1.0 : 0.0,
-                severity: isOob ? "High" : "Unknown",
+                severity: isOob ? "High" : "Normal",
                 anomaly_type: isOob ? "OutOfBounds" : "Normal",
                 affected_sensor: oobSensor,
                 tier: isOob ? "Tier 1 (Local Fallback)" : "None (ML Offline)",
@@ -80,8 +80,8 @@ exports.addWeather = async (req, res) => {
                     humidity: numHum,
                     prediction: isOob ? -1 : 1,
                     anomaly: isOob,
-                    label: isOob ? "Anomaly" : "Unknown",
-                    severity: isOob ? "High" : "Unknown",
+                    label: isOob ? "Anomaly" : "Normal",
+                    severity: isOob ? "High" : "Normal",
                     anomalyScore: isOob ? 1.0 : 0.0,
                     threshold: 0.615997,
                     model: "Local Fallback Guardrail"
