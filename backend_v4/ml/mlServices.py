@@ -600,11 +600,11 @@ if __name__ == "__main__":
     print("ML Engine          :", model_name)
     print("Engineered Features:", len(FEATURES))
     print("Decision Threshold :", threshold)
-    print("Server URL         : http://127.0.0.1:8000")
+    print("Server starting on Render")
     print("=" * 60)
 
-    app.run(
-        host="127.0.0.1",
-        port=8000,
-        debug=False
-    )
+app.run(
+    host="0.0.0.0",
+    port=int(os.environ.get("PORT", 8000)),
+    debug=False
+)
