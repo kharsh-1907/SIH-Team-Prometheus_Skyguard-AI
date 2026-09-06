@@ -11,6 +11,22 @@ function Metric({ Icon, title, value, unit, status, subtitle, tone }) {
   </div></div>
 }
 function Health({ name, value, tone }) { return <div className="healthItem"><div><span>{name}</span><b>{value}%</b></div><section><i className={tone} style={{ width: value + "%" }} /></section></div> }
+function getSensorStatus(weather, sensor) {
+  if (!weather) return "---";
+
+  const affectedSensor = weather.affectedSensor?.toLowerCase();
+
+  if (
+    weather.status &&
+    weather.status !== "Normal" &&
+    affectedSensor === sensor
+  ) {
+    return weather.status;
+  }
+
+  return "Normal";
+}
+
 
 function Chart({ readings }) {
   const data = [...(readings || [])].reverse();
@@ -331,11 +347,11 @@ export default function App() {
             </div>
 
             <section className="metrics">
-              <Metric Icon={Thermometer} title="Temperature" value={dashboard?.latestWeather?.temperature ?? "---"} unit=" °C" status={dashboard?.latestWeather?.status ?? "---"} tone="green" />
+              <Metric Icon={Thermometer} title="Temperature" value={dashboard?.latestWeather?.temperature ?? "---"} unit=" °C" status={getSensorStatus(dashboard?.latestWeather, "temperature")} tone="green" />
 
-              <Metric Icon={Droplets} title="Humidity" value={dashboard?.latestWeather?.humidity ?? "---"} unit=" %" status={dashboard?.latestWeather?.status ?? "---"} tone="blue" />
+              <Metric Icon={Droplets} title="Humidity" value={dashboard?.latestWeather?.humidity ?? "---"} unit=" %" status={getSensorStatus(dashboard?.latestWeather, "humidity")} tone="blue" />
 
-              <Metric Icon={Gauge} title="Pressure" value={dashboard?.latestWeather?.pressure ?? "---"} unit=" hPa" status={dashboard?.latestWeather?.status ?? "---"} tone="orange" />
+              <Metric Icon={Gauge} title="Pressure" value={dashboard?.latestWeather?.pressure ?? "---"} unit=" hPa" status={getSensorStatus(dashboard?.latestWeather, "pressure")} tone="orange" />
 
               <Metric
                 Icon={AlertTriangle}
