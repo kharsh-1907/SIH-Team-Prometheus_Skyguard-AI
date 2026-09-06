@@ -283,6 +283,22 @@ export default function App() {
     return () => clearInterval(timer);
   }, []);
 
+  const latest = dashboard?.latestWeather;
+
+  const getSensorStatus = (sensor) => {
+    if (!latest) return "---";
+
+    if (
+      latest.isAnomaly &&
+      latest.affectedSensor === sensor
+    ) {
+      return latest.status;
+    }
+
+    return "Normal";
+  };
+
+
   return <div className="app">
     <aside className={open ? "sidebar open" : "sidebar"}>
       <div className="brand"><div className="brandIcon"><CloudSun size={21} /></div><div><h2>SkyGuard <span>AI</span></h2><p>Weather Monitoring</p></div><button className="close" onClick={() => setOpen(false)}><X size={18} /></button></div>
@@ -347,11 +363,11 @@ export default function App() {
             </div>
 
             <section className="metrics">
-              <Metric Icon={Thermometer} title="Temperature" value={dashboard?.latestWeather?.temperature ?? "---"} unit=" °C" status={getSensorStatus(dashboard?.latestWeather, "temperature")} tone="green" />
+              <Metric Icon={Thermometer} title="Temperature" value={dashboard?.latestWeather?.temperature ?? "---"} unit=" °C" status={getSensorStatus("temperature")} tone="green" />
 
-              <Metric Icon={Droplets} title="Humidity" value={dashboard?.latestWeather?.humidity ?? "---"} unit=" %" status={getSensorStatus(dashboard?.latestWeather, "humidity")} tone="blue" />
+              <Metric Icon={Droplets} title="Humidity" value={dashboard?.latestWeather?.humidity ?? "---"} unit=" %" status={getSensorStatus("humidity")} tone="blue" />
 
-              <Metric Icon={Gauge} title="Pressure" value={dashboard?.latestWeather?.pressure ?? "---"} unit=" hPa" status={getSensorStatus(dashboard?.latestWeather, "pressure")} tone="orange" />
+              <Metric Icon={Gauge} title="Pressure" value={dashboard?.latestWeather?.pressure ?? "---"} unit=" hPa" status={getSensorStatus("pressure")} tone="orange" />
 
               <Metric
                 Icon={AlertTriangle}
